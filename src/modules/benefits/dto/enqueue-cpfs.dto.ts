@@ -1,4 +1,3 @@
-import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsCPF } from 'class-validator-cpf';
 
@@ -8,7 +7,6 @@ export class EnqueueCPFSDTO {
   @Transform(({ value }: { value: string[] }) =>
     value.map((cpf) => cpf.replace(/\D/g, '')),
   )
-  @ApiProperty()
   cpfs: string[];
 }
 

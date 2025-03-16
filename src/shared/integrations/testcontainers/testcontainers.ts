@@ -14,9 +14,7 @@ export class TestContainers {
   static elasticsearchContainer: StartedElasticsearchContainer;
 
   static async startContainers() {
-    this.rabbitMQContainer = await new RabbitMQContainer(
-      'rabbitmq:3-management',
-    ).start();
+    this.rabbitMQContainer = await new RabbitMQContainer().start();
     this.redisContainer = await new RedisContainer().start();
     this.elasticsearchContainer = await new ElasticsearchContainer().start();
   }

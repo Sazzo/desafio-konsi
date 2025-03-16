@@ -9,8 +9,6 @@ import { EnvService } from 'src/shared/env/env.service';
       useFactory: (envService: EnvService) => ({
         exchanges: [
           {
-            // This use case would actually work with the default exchange, but its preferred to use a custom one.
-            // Since we're using only one queue currently, we're using the direct exchange type.
             name: Constants.BENEFITS_EXCHANGE_NAME,
             type: 'direct',
             createExchangeIfNotExists: true,
