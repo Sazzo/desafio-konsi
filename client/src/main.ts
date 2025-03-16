@@ -16,7 +16,6 @@ const benefitsSearchResultDiv =
 enqueueButton.addEventListener('click', async () => {
   try {
     const cpfs = cpfsToEnqueueTextArea.value.split('\n');
-
     if (!cpfs.length) return alert('Nenhum CPF informado');
 
     const response = await fetch(
