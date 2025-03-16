@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Desafio Konsi</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>Desafio Técnico <span style="color: #0a9f82">Konsi</span></h1>
+      <h2>Colocar CPFs na fila (enqueue/input)</h2>
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <textarea
+          id="cpfs-to-enqueue"
+          placeholder="Digite um CPF por linha"
+          rows="10"
+          cols="30"
+        ></textarea>
+        <button id="enqueue">Adicionar CPFs</button>
+      </div>
+
+      <h2>Pesquisar benéficios por CPF</h2>
+      <p>Um novo CPF pode demorar alguns segundos para ser indexado.</p>
+      <div style="display: flex; flex-direction: column; gap: 10px">
+        <input id="cpf-to-search" placeholder="Digite um CPF" />
+        <button id="search">Pesquisar</button>
+        <div id="benefits"></div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
