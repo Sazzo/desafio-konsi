@@ -12,6 +12,7 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
+  app.enableCors();
 
   const docsConfig = new DocumentBuilder()
     .setTitle('Desafio Técnico Konsi')
