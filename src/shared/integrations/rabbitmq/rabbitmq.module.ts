@@ -24,7 +24,7 @@ import { EnvService } from 'src/shared/env/env.service';
             createQueueIfNotExists: true,
           },
         ],
-        uri: `amqp://${envService.get('RABBITMQ_HOST')}:${envService.get('RABBITMQ_PORT')}`,
+        uri: `amqp://${envService.get('RABBITMQ_AUTH_USERNAME')}:${envService.get('RABBITMQ_AUTH_PASSWORD')}@${envService.get('RABBITMQ_HOST')}:${envService.get('RABBITMQ_PORT')}`,
       }),
       inject: [EnvService],
     }),
