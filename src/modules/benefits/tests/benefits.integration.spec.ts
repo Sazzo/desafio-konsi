@@ -3,7 +3,7 @@ import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
 import { createMock } from '@golevelup/ts-jest';
 import { ValidationPipe } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { AppModule, configModule } from 'src/app.module';
+import { AppModule } from 'src/app.module';
 import { KonsiINSSService } from 'src/shared/integrations/konsi-inss/konsi-inss.service';
 import { RedisService } from 'src/shared/integrations/redis/redis.service';
 import { TestContainers } from 'src/shared/integrations/testcontainers/testcontainers';
@@ -16,6 +16,7 @@ import {
 import { ConfigModule } from '@nestjs/config';
 import { BenefitsService } from '../benefits.service';
 import { SearchBenefitsResponseDTO } from '../dto/search-benefits.dto';
+import { configModule } from 'src/shared/env/env.module';
 
 describe('BenefitsController (integration)', () => {
   let app: NestExpressApplication;
