@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: ./.github/setup-tests-composite.yml
+      - uses: ./.github/workflows/setup-tests.yml
 
       - name: Run unit tests
         run: pnpm test:unit
@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: ./.github/setup-tests-composite.yml
+      - uses: ./.github/workflows/setup-tests.yml
 
       - name: Install Docker Compose
         run: |
