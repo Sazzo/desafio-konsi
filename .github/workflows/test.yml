@@ -6,42 +6,11 @@ on:
   workflow_call:
 
 jobs:
-  test:
+  unit-tests:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          run_install: false
-
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - name: Setup pnpm cache
-        uses: actions/cache@v4
-        with:
-          path: pnpm-store
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-
-      - name: Install Docker Compose
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker-compose
+      - uses: ./.github/setup-tests-composite.yml
 
       - name: Run unit tests
         run: pnpm test:unit
@@ -49,8 +18,19 @@ jobs:
           NODE_ENV: test
           CI: true
 
+  integration-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: ./.github/setup-tests-composite.yml
+
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
       - name: Run integration tests
-        run: pnpm test:int
+        run: pnpm test:integration
         env:
           NODE_ENV: test
           CI: true
