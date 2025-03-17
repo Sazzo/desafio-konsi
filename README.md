@@ -49,7 +49,7 @@ Após todos os containers iniciarem, a interface web da aplicação deve estar d
 
 Você pode acessar a interface Swagger em `http://localhost:3001/docs`. O documento da especificação OpenAPI também está disponível em `http://localhost:3001/docs-json`
 
-## Estrutura, Testes e Escalabilidade
+## A aplicação
 
 ### Estrutura
 
@@ -62,6 +62,10 @@ O projeto segue a seguinte estrutura:
 ### Testes
 
 A aplicação possui **100%** de cobertura de testes unitários, e cada módulo possui testes de integração feitos para testar as funcionalidades end-to-end através de Testcontainers.
+
+### Performance (ambiente de desenvolvimento)
+
+Um CPF novo, que não está presente no cache, ao ser inserido na fila do RabbitMQ, demora cerca de 4 segundos para ser processado (tempo esse que é principalmente influenciado pela requisição para a API externa). Um CPF que já está no cache demora no máximo, 100ms.
 
 ### Escalabilidade
 
