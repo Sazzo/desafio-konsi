@@ -51,7 +51,7 @@ export class BenefitsService implements OnModuleInit {
 
   async getBenefitsCacheByCPF(cpf: string) {
     const storedBenefits = await this.redisService.hget(
-      `benefits:${cpf}`,
+      `${Constants.BENEFITS_CACHE_PREFIX}:${cpf}`,
       'benefits',
     );
     if (!storedBenefits) return null;
@@ -59,15 +59,25 @@ export class BenefitsService implements OnModuleInit {
     return JSON.parse(storedBenefits) as IBenefits[];
   }
 
-  setBenefitsCacheByCPF(cpf: string, benefits: IBenefits[]) {
+  async setBenefitsCacheByCPF(cpf: string, benefits: IBenefits[]) {
     // SETs would work here too instead of a Hashmap, but conceptually it makes more sense to use a Hashmap
     // Even though there's no real performance gain in this case, because of the data serialization (JSON.stringify)
 
     // Serializing benefits into a string and then deserializing it later can cause performance issues if benefits is too big
     // The reason we're doing this is because Redis dont't supports object arrays natively in Hashmaps
-    return this.redisService.hset(`benefits:${cpf}`, {
-      benefits: JSON.stringify(benefits),
-    });
+    const cachedBenefits = await this.redisService.hset(
+      `${Constants.BENEFITS_CACHE_PREFIX}:${cpf}`,
+      {
+        benefits: JSON.stringify(benefits),
+      },
+    );
+
+    await this.redisService.expire(
+      `${Constants.BENEFITS_CACHE_PREFIX}:${cpf}`,
+      Constants.BENEFITS_CACHE_TTL,
+    );
+
+    return cachedBenefits;
   }
 
   async createBenefitsIndexIfNotExists() {
