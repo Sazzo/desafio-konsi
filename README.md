@@ -49,7 +49,9 @@ Após todos os containers iniciarem, a interface web da aplicação deve estar d
 
 Você pode acessar a interface Swagger em `http://localhost:3001/docs`. O documento da especificação OpenAPI também está disponível em `http://localhost:3001/docs-json`
 
-## Estrutura e Testes
+## Estrutura, Testes e Escalabilidade
+
+### Estrutura
 
 O projeto segue a seguinte estrutura:
 
@@ -57,7 +59,13 @@ O projeto segue a seguinte estrutura:
   - `src/modules` - Módulos da aplicação, que representam recursos/funcionalidades. Cada módulo pode possuir seu controller, seus DTOs, testes e etc.
   - `src/shared` - Código reutilizavel da aplicação, como constantes e integrações (RabbitMQ, Elasticsearch, Redis, etc).
 
+### Testes
+
 A aplicação possui **100%** de cobertura de testes unitários, e cada módulo possui testes de integração feitos para testar as funcionalidades end-to-end através de Testcontainers.
+
+### Escalabilidade
+
+O backend pode ser escalado verticialmente (adicionando mais recursos a maquina) ou horizontalmente (adição de mais servidores), sendo que a 2° opção pode ser feita através de um load balancer (HAProxy, Envoy e etc) e possivelmente um orquestrador de containers como k8s ou Docker Swarm. O Elasticsearch, RabbitMQ e Redis também possuem suporte para escalar horizontalmente, através de clustering.
 
 ## Continuous Integration (CI)
 
