@@ -23,4 +23,4 @@ COPY --from=builder /app/package.json ./
 ENV PORT=3000
 EXPOSE $PORT
 
-CMD ["pnpm", "start"]
+CMD ["pnpm", "start:prod"]
