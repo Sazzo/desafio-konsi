@@ -1,0 +1,16 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: {}
+
+jobs:
+  tests:
+    uses: ./.github/workflows/test.yml
+  build:
+    permissions:
+      packages: write
+      contents: read
+    uses: ./.github/workflows/build.yml
+    needs: tests
