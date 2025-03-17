@@ -1,6 +1,3 @@
-import fetchMock from 'jest-fetch-mock';
-fetchMock.enableMocks();
-
 import { Test } from '@nestjs/testing';
 import { KonsiINSSService } from '../konsi-inss.service';
 import { EnvService } from 'src/shared/env/env.service';
@@ -59,12 +56,16 @@ describe('KonsiINSSService', () => {
   });
 
   beforeEach(() => {
-    fetchMock.resetMocks();
+    jest.clearAllMocks();
   });
 
   describe('getAuthToken', () => {
     it('should fetch and return the auth token', async () => {
-      fetchMock.mockResponseOnce(JSON.stringify(fakeAuthTokenResponse));
+      jest
+        .spyOn(global, 'fetch')
+        .mockImplementationOnce(() =>
+          Promise.resolve(new Response(JSON.stringify(fakeAuthTokenResponse))),
+        );
 
       const authToken = await konsiINSSService.getAuthToken();
 
@@ -72,9 +73,11 @@ describe('KonsiINSSService', () => {
     });
 
     it('should throw an error if the request is not 2xx', async () => {
-      jest.spyOn(envService, 'get').mockReturnValue('fake-url');
-
-      fetchMock.mockResponseOnce('', { status: 400 });
+      jest
+        .spyOn(global, 'fetch')
+        .mockImplementationOnce(() =>
+          Promise.resolve(new Response('', { status: 400 })),
+        );
 
       await expect(konsiINSSService.getAuthToken()).rejects.toThrow();
     });
@@ -82,7 +85,11 @@ describe('KonsiINSSService', () => {
 
   describe('getBenefitsFromCPF', () => {
     it('should fetch and return the benefits from a CPF', async () => {
-      fetchMock.mockResponseOnce(JSON.stringify(fakeBenefitsResponse));
+      jest
+        .spyOn(global, 'fetch')
+        .mockImplementationOnce(() =>
+          Promise.resolve(new Response(JSON.stringify(fakeBenefitsResponse))),
+        );
 
       const benefits = await konsiINSSService.getBenefitsFromCPF(
         'fake-token',
@@ -93,7 +100,11 @@ describe('KonsiINSSService', () => {
     });
 
     it('should throw an error if the request is not 2xx', async () => {
-      fetchMock.mockResponseOnce('', { status: 400 });
+      jest
+        .spyOn(global, 'fetch')
+        .mockImplementationOnce(() =>
+          Promise.resolve(new Response('', { status: 400 })),
+        );
 
       await expect(
         konsiINSSService.getBenefitsFromCPF('fake-token', '12345678901'),
