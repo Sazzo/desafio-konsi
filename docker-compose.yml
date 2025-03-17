@@ -1,7 +1,19 @@
 version: '3.8'
 
 services:
-  app:
+  web-client:
+    image: ghcr.io/sazzo/desafio-konsi-client:latest
+    container_name: desafio-konsi-client
+    ports:
+      - '3001:3001'
+    env_file:
+      - .env
+    depends_on:
+      - api
+    networks:
+      - desafio-konsi-net
+
+  api:
     image: ghcr.io/sazzo/desafio-konsi:latest
     container_name: desafio-konsi-app
     ports:
@@ -43,7 +55,12 @@ services:
       - cluster.name=es-docker-cluster
       - discovery.type=single-node
       - ELASTIC_PASSWORD=default-elasticsearch-password
+      - bootstrap.memory_lock=true
       - xpack.security.enabled=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     volumes:
       - elasticsearch_data:/usr/share/elasticsearch/data
     ports:

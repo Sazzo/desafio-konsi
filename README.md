@@ -29,6 +29,10 @@ RABBITMQ_HOST=rabbitmq
 RABBITMQ_PORT=5672
 RABBITMQ_AUTH_USERNAME=default-rabbitmq-user
 RABBITMQ_AUTH_PASSWORD=default-rabbitmq-password
+
+## Web client/interface
+
+VITE_BENEFITS_API_URL=http://localhost:3001
 ```
 
 2. Iniciar a aplicação

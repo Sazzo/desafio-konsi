@@ -21,11 +21,20 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - name: Build and Push to Github Container Registry
+      - name: Build and Push API
         uses: docker/build-push-action@v2
         with:
           context: .
           push: true
           tags: ghcr.io/sazzo/desafio-konsi:latest
+          cache-from: type=gha, scope=${{ github.workflow }}
+          cache-to: type=gha, scope=${{ github.workflow }}
+
+      - name: Build and Push Web Client
+        uses: docker/build-push-action@v2
+        with:
+          context: ./client
+          push: true
+          tags: ghcr.io/sazzo/desafio-konsi-client:latest
           cache-from: type=gha, scope=${{ github.workflow }}
           cache-to: type=gha, scope=${{ github.workflow }}
