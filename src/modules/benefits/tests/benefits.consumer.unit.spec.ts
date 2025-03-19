@@ -118,5 +118,31 @@ describe('BenefitsConsumer', () => {
         fakeBenefits,
       );
     });
+
+    it('should return if there are no benefits', async () => {
+      jest
+        .spyOn(benefitsService, 'getBenefitsCacheByCPF')
+        .mockResolvedValue(null);
+      jest
+        .spyOn(konsiINSSService, 'getAuthToken')
+        .mockResolvedValue('fake-auth-token');
+      jest.spyOn(konsiINSSService, 'getBenefitsFromCPF').mockResolvedValue([]);
+
+      const setBenefitsCacheByCPF = jest.spyOn(
+        benefitsService,
+        'setBenefitsCacheByCPF',
+      );
+      const addBenefitsToIndex = jest.spyOn(
+        benefitsService,
+        'addBenefitsToIndex',
+      );
+
+      await benefitsConsumer.consumeCPFToFetchBenefits({
+        cpf: fakeCPFs[0],
+      });
+
+      expect(setBenefitsCacheByCPF).not.toHaveBeenCalled();
+      expect(addBenefitsToIndex).not.toHaveBeenCalled();
+    });
   });
 });

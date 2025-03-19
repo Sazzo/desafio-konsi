@@ -41,14 +41,22 @@ export class BenefitsConsumer {
     }
 
     this.logger.log(
-      "Received a non-cached CPF, fetching benefits from Konsi INSS' API",
+      'Received a non-cached CPF, fetching benefits from Konsi INSS API',
     );
 
     const authToken = await this.konsiINSSService.getAuthToken();
-    const benefits = await this.konsiINSSService.getBenefitsFromCPF(
-      authToken,
-      message.cpf,
-    );
+    const benefits = await this.konsiINSSService
+      .getBenefitsFromCPF(authToken, message.cpf)
+      .then((benefits) => benefits)
+      .catch((error: Error) => {
+        this.logger.error(`${error.message}`);
+        return [];
+      });
+
+    if (!benefits.length) {
+      this.logger.warn('Could not fetch benefits from CPF. Skipping...');
+      return;
+    }
 
     await this.benefitsService.setBenefitsCacheByCPF(message.cpf, benefits);
     await this.benefitsService.addBenefitsToIndex(message.cpf, benefits);
